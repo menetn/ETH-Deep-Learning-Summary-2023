@@ -1,0 +1,34 @@
+\section*{Background}
+$\log(x+1)\approx x$ if $|x|\ll 1$ \\
+\textbf{Geometric series:} $\sum_{k=0}^nr^k=(\frac{1-r^{n+1}}{1-r})\overset{n\rightarrow\infty}{\longrightarrow}\frac{1}{1-r},$\hfill $ |r|<1$\\
+\textbf{Hoeffding's inequality: } For $Z_i \in [a_i,b_i]$ i.i.d.\\ $P(\frac{1}{n}\sum_{i=1}^n Z_i - \mathbb E[Z]\geq t)\leq \exp(-\frac{2n^2t^2}{\sum_{i=1}^n(b_i -a_i)^2})$\\
+\textbf{Hölder's inequality:} $||v \cdot u||_1\leq||v||_{p}||u||_{p^*}$ with $1/p+1/p^*\!=\!1$\\
+\textbf{Jensen's inequality:} $f$ convex, then $f(\mathrm E[X])\leq\mathrm E[f(X)]$\\
+\textbf{Markov's inequality:} $\mathrm P(X\geq a)\leq\frac{\mathrm E[X]}{a}$ for $X \geq 0\ a.s.,\ a > 0$\\
+\textbf{KL Divergence:} $KL(Q || P) = \int_{-\infty}^{\infty} q(x)\log \frac{q(x)}{p(x)}dx$\\
+\textbf{Entropy:} $H(X) = - \sum P(x_i)\log P(x_i) $
+
+\textbf{For $A,B$ square:} $\det AB = \det A \cdot \det B$, $\det A^{-1} = \frac{1}{\det A }$\\
+\resizebox{\linewidth}{!}{\textbf{MGF:}
+$M_X \!:\!\mathbb{R}^n \!\rightarrow\! \mathbb{R}$, $M_X(t) \!=\! \mathbb{E}_X[\exp(t^T X)]$, $M_{X\!+\!Y} \!=\! M_X \!\cdot\! M_Y$}\\
+\textbf{Moment Represent.:} $\mathbb E [X_1^{k_1} \cdots X_n^{k_n} ] = \frac{\partial^k}{\partial t_1^{k_1} \ldots \partial t_n^{k_n}} M_X \vert_{t=0}$\\
+For $x \sim \mathcal{N}(\mu, \Sigma)$, we have $M_x(t) = \exp(t^T\mu + \frac{1}{2}t^T\Sigma t)$
+
+%%%% DISTRIBUTIONS %%%%
+
+\textbf{Normal:}
+$p(x|\mu, \Sigma) = \frac{1}{\sqrt{(2\pi)^k\det(\Sigma)}} \exp(-\frac{1}{2}(x-\mu)^t\Sigma^{-1}(x-\mu))$\\
+\resizebox{\linewidth}{!}{\textbf{KL-Divergence between $P \sim \mathcal{N}(\mu_P, \Sigma_P)$ and $Q \sim \mathcal{N}(\mu_Q, \Sigma_Q)$:}}\\ 
+\resizebox{\linewidth}{!}{$KL(P||Q) = \frac{1}{2}[(\mu_Q - \mu_P)^T \Sigma_Q^{-1}(\mu_Q - \mu_P) + \text{Tr}(\Sigma_Q^{-1}\Sigma_P) - \ln \frac{|\Sigma_P|}{|\Sigma_Q|} - n]$}
+
+\resizebox{\linewidth}{!}{\textbf{Gaussian Process:} $\sum_{i=1}^s \alpha_i F(x_i)\sim \mathcal N\ \forall \alpha_1, \ldots, \alpha_s \land x_1, \ldots, x_s$}
+
+
+\textbf{Exponential:} $p(x|\lambda)=\lambda e^{-\lambda x}$\\
+\textbf{Bernoulli:} $p(x|p)=p^x (1-p)^{1-x}$\\
+\textbf{Binomial:} $p(x|n,p)={n\choose x}p^x (1-p)^{n-x}$\\
+\textbf{Poisson:} $p(x|\lambda)=\frac{\lambda^x\exp[-\lambda]}{x!}$
+
+Level sets: $L_f(z) = \{ x: \phi(w^Tx+b) = z\} \perp w$
+
+Jacobi Matrix: $\frac{\partial F}{\partial x} = (\frac{\partial F_i}{\partial x_j})_{ij}$

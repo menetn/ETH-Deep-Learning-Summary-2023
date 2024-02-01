@@ -1,0 +1,75 @@
+\color{black}
+\section*{Gradient Descent and Optimizers}
+\resizebox{\linewidth}{!}{\textit{Gradient information provides direction of steepest descent:}}
+
+\hspace{10pt} $\lim_{\eta\rightarrow0}\arg\min_{\pmb \vartheta:||\pmb\vartheta||_2=1}f(\mathbf{x};\pmb\theta +\eta\pmb\vartheta)=-\frac{\nabla_{\pmb\theta}f(\mathbf x;\pmb\theta)}{||\nabla_{\pmb\theta}f(\mathbf x;\pmb\theta)||_2}$\\
+%Derivative wrt parameter in layer: $h'\circ g$\\
+%Derivative wrt parameter in next layer: $(\partial h\circ g)\cdot g'$
+%\resizebox{\linewidth}{!}{\textit{\subsection*{Notation}
+%Network $F = F_{k:1} = F_k \circ F_{k-1} \circ ... \circ F_1$ \\
+%Activations: $\mathbf z_l:=F_{l:1}(\mathbf x)=(F_l\circ F_{l-1:1})(\mathbf x)=F_l(\mathbf z_{l-1})$\\
+%Jac. of $F:\mathbb R^n\rightarrow \mathbb R^m: \partial F=(\partial_{ij}F)=(\partial_i F_j): \mathbb R^n\rightarrow \mathbb R^{m\times n}$\\
+%Chain rule for maps: $\partial(G\circ H)=\partial (G\circ H)\cdot\partial H$\\ 
+%$\partial F = \prod_{l = k}^1\partial F_l \circ F_{l-1:1}, \ \partial F(\mathbf x)=\prod_{l = k}^1\partial F_l (\mathbf z_{l-1})$\\
+%Loss: $f=l\circ F$\\
+
+\subsection*{Gradient Descent and Newton's Method}
+\textbf{Gradient Descent:}\\
+\resizebox{\linewidth}{!}{Discretize gradient flow $\dot{\mathbf \theta}=\text{-}\nabla f(\mathbf \theta)$ as $\mathbf \theta_{t+1}=\mathbf \theta_t-\eta\nabla f(\mathbf \theta_t)$}
+
+\textbf{Newton's Method}:\\
+Directly jumps to minimum of 2nd order Taylor of $f$:
+
+\hspace{15pt} $f(\mathbf{\theta+\Delta \theta})\approx f(\mathbf \theta)+\Delta\mathbf \theta^T \nabla f(\mathbf \theta)+\frac{1}{2}\Delta\mathbf \theta^T\nabla^2f(\mathbf \theta)\Delta\mathbf \theta$\\
+which results in $\Delta\mathbf \theta=-[\nabla^2f(\mathbf \theta)]^{-1}\nabla f(\mathbf \theta)$. GD is recovered under isotropy assumption on the Hessian ($\nabla^2 f(\mathbf \theta)=\frac{1}{\eta}\mathrm I$)
+
+\textbf{Batch Gradient Descent (unbiased with $\mathbb{E}[\nabla \hat{f}_\theta] = \nabla f_\theta$):}\\
+Compute $\nabla \hat f_\theta = \frac{1}{r}\sum_{t=1}^r f_\theta(x_{i_t}, y_{i_t})$ where $i_t \sim \mathcal U(\{1, \ldots, s\})$.
+
+\textbf{SGD ($r=1$) Variance Reduction Technique (SVRG):}\\
+Every $T$ steps compute full gradient $\nabla_\vartheta f_{\vartheta}$. Use updates $\theta_{t+1}=\theta_t-\eta[\nabla f_{\theta_t}(x_i, y_i)-\nabla f_{\vartheta}(x_i, y_i) +\nabla_\theta f_{\vartheta}]$
+
+\textbf{Compressed Stochastic Gradients (SignSGD):}\\
+Update $\theta_{k+1} = \theta_k-\eta_k\text{sign}[\nabla f(\theta_k)(x_{i_t}, y_{i_t})]$.
+
+\subsection*{Gradient Descent with Momentum}
+\textbf{Nesterov’s Accelerated Gradient Descent:}\\
+$x_{k+1} = y_{k}-\eta\nabla f(y_{k+1}) \quad y_{k} = x_k+\beta(x_k-x_{k-1}) \quad\hfill \beta \in [0,1)$
+
+\textbf{Polyak's Heavy Ball Method:}\\
+$x_{k+1} = x_k -\eta\nabla f(x_k)+\beta(x_k-x_{k-1})\quad\hfill \beta \in [0,1)$\\[-3pt]
+\resizebox{\linewidth}{!}{with $x_{t+1} - x_{t} = - \eta\sum_{k=0}^t \beta^{t-k} \nabla f(x_k) \xrightarrow{t\to\infty,\ const\ \nabla f} -\frac{\eta}{1-\beta} \nabla f$}
+
+\subsection*{Adaptive Gradient Descent}
+\textbf{AdaGrad (decays LR based on 2nd moment estimate):}\\
+$\theta[j]$ is updated with learning rate $\eta_{t,j} = \frac{\eta}{\gamma_{t,j} + \delta}$ where  $\gamma_{t,j}^2 = \gamma_{t-1,j}^2 + (\frac{\partial f_\theta(x_{i_t}, y_{i_t})}{\partial \theta_{t}[j]})^2$ with  $0 < \delta \approx 0$ for stability.\\
+\textbf{Adam - Adaptive Moment Estimation (w. momentum):}\\
+Exponential averages: $\Delta_{t+1} = \alpha \Delta_t + (1-\alpha)\nabla{f_\theta}(x_{i_t},y_{i_t})$ and $\gamma_{t+1,j}^2 = \beta\gamma_{t,j}^2 + (1-\beta)(\frac{\partial f_\theta(x_{i_t}, y_{i_t})}{\partial \theta_{t}[j]})^2$ where $\alpha, \beta \in [0,1)$\\
+Update: $\theta_{t+1}[j] = \theta_{t}[j] + \frac{\eta}{\gamma_{t,j}/(1-\beta)+\delta}\frac{\Delta_{t+1,j}}{1-\alpha}$ with  $0 < \delta \approx 0$\\
+
+\textbf{AMSGrad (fixes/ensures convergence):}\\
+Adam + monotonicity $\tilde \gamma_{t+1, j} = \max(\gamma_{t+1, j}, \tilde \gamma_{t, j})$.
+
+\subsection*{Backpropagation}
+%$\nabla_{\pmb\theta_l}F=(\partial F_{k:l+1}\circ F_{l:1})\cdot(F'_l\circ F_{l-1:1}) =\partial F_{k:l+1}(\mathbf z_l)\cdot F'_l(\mathbf z_{l-1})$\\Corresponds to downstream Jacob. $\times$ local Jacob:
+\textbf{Chain rule:} $\partial (G\circ F_{\pmb\theta} \circ H) = (\partial G \circ F_{\pmb\theta}\circ H)\cdot (\partial F_{\pmb\theta}\circ H)$\\
+%$\nabla_{\pmb\theta_l}f(\mathbf x)=\partial(l\circ F_{k:l+1})(\mathbf z_l)\cdot F'_l(\mathbf z_{l-1})=:\pmb\xi_{l+1}\cdot F'_l(\mathbf z_{l-1})$\\
+%Row vectors $\pmb\xi_{l}$ calculated through backward iteration: \\
+%$\pmb\xi_{k+1}=\partial l(\mathbf z_k), \quad \pmb\xi_{l}=\pmb\xi_{l+1}\partial F_l(\mathbf z_{l-1})$\\
+\textbf{Backpropagation algorithm} consists of three steps:\\
+(1) forward pass computing all pre-activations $\mathbf z_l$, \\
+(2) backward pass computing all $\pmb\xi_{l} = \frac{\partial L}{\partial z_l} = \frac{\partial L}{\partial z_{l+1}} \frac{\partial z_{l+1}}{\partial z_{l}}$\\
+(3) local computations computing all $\frac{\partial L}{\partial W_l} = \frac{\partial L}{\partial z_l} \frac{\partial z_l}{\partial W_l}$
+\subsection*{\resizebox{\linewidth}{!}{Automatic Differentiation of $f:\mathbb R^N\rightarrow\mathbb R^M$ as a DAG($V$, $E$)}}
+Usually $N=\#\text{parameters}$ and $M=1$ (scalar loss).
+
+\textbf{Forward Mode:} Chain rule from right to left (no separate forward pass). Scales in $\mathcal O(N(V+E))$.
+
+\textbf{Reverse Mode:} Chain rule from left to right (needs sepa- \resizebox{\linewidth}{!}{rate forward pass $\Rightarrow$ more memory). Scales in $\mathcal O(M(V+E))$.}
+
+%El.-wise function (e.g. activation fun): $\frac{\partial}{\partial \mathbf x}f(\mathbf x)=\text{diag}(f'(\mathbf x))$%\\
+%ReLU wrt pre-activations: $\frac{\partial}{\partial \mathbf x}\max(0,\mathbf x)=\text{diag}(H(\mathbf x))$\\
+%" \ wrt $\pmb\theta$: $\frac{\partial}{\partial \mathbf W_{ij}}\max(0,\mathbf{Wx})_k=\max(0,\text{sign}(\mathbf{W_i}^T\mathbf x))x_j\delta_{ik}$\\
+%" \ wrt activ.: $\frac{\partial}{\partial \mathbf x_j}\max(0,\mathbf{Wx})_i=\max(0,\text{sign}(\mathbf W_i^T\mathbf x))\cdot W_{ij}$
+
+\color{red}

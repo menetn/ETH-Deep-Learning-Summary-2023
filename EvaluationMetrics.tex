@@ -1,0 +1,4 @@
+\section*{Evaluation Metrics for Implicit Models}
+\textit{Implicit Models cannot use evaluation likelihood score.}\\
+\textbf{Inception Score:} $\exp(\mathbb E_{x \sim p_\theta} [KL(p(y|x)||\mathbb{E}_{x \sim p_\theta} p(y|x))])$ where $p(y|x)$ is given by InceptionV3. $p(y|x)$ should differ from marginal $p(y)$ which is achieved by confidence (no false generation) and coverage (no mode collapse).\\
+\textbf{FID:} $||\mu - \mu_\theta||_2^2 + \text{Tr}(\Sigma + \Sigma_\theta - 2 (\Sigma \Sigma_\theta)^{1/2})$ where $\mu, \Sigma$ and $\mu_\theta, \Sigma_\theta$ are the empirical mean and covariance matrix of the InceptionV3 output layer based on real and generated images respectively. It corresponds to the Wasserstein distance between fitted m.v. Gaussians.

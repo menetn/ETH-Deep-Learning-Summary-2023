@@ -1,0 +1,9 @@
+\color{black}
+\section*{Generative Models}
+\textbf{1 - Prescribed Model}: Density explicitly specified $p_\theta(x|z)$\\
+which needs integration \(p_\theta(x) = \int_z p_\theta(x|z) p(z) dz\).
+
+\textbf{2 - Implicit Model}: Directly generate data $x = f_\theta(z)$,\\
+with implicit distribution $p_\theta(x) = p_z(f_\theta^{-1}(x)) |\frac{df_\theta^{-1}(x)}{dx}|$.\\
+\textbf{Mode Collapse:} $\exists x : p(x) \gg p_\theta(x) \approx 0$\\
+\textbf{False Generation:} $\exists x : p_\theta(x) \gg p(x) \approx 0$\\

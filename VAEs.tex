@@ -1,0 +1,31 @@
+\section*{Autoencoders}
+\subsection*{Linear Autoencoder}
+\textbf{Def:} $\mathbf{x\mapsto z \mapsto y}, \quad \mathbf{z=Cx, \ y=Dz, \quad C,D}^T\in\mathbb R^{m\times n}, m<n$\\
+\textbf{Loss:} $\ell(\mathbf x)=\frac{1}{2}||\mathbf{x-y}||^2 =\frac{1}{2}||\mathbf{x-DC x}||^2$\\
+\textbf{Matrix notation:} $\mathbf{X,Y}\in\mathbb{R}^{n\times s}:\ \min_{D,C}\frac{1}{2s}||\mathbf{X-DCX}||^2_F$\\
+\resizebox{\linewidth}{!}{\textbf{Eckhart-Young-Mirsky: } $\min_{\text{rank}(\mathbf Y)\leq r}||\mathbf{X-Y}||_F = ||\mathbf{X-X}_r||_F$}\\
+for $X = U \Sigma V^T$ set $\mathbf{C=U}_m^T, \mathbf{D=U}_m \Rightarrow \mathbf{DCX=X}_m$
+
+\subsection*{Linear Factor Analysis}
+\textbf{Latent variable prior:} $\mathbf z\sim\mathcal N(\mathbf 0,\mathrm I), \quad \mathbf z\in\mathbb R^m, \quad m \ll n$\\
+\textbf{Linear observation model:} $\mathbf x=\pmb\mu+\mathbf{Wz}+\pmb\eta \in\mathbb R^n$ where
+
+\hfill $\pmb\eta\sim\mathcal N(\mathbf 0, \pmb\Sigma),\ \pmb\Sigma:=\text{diag}(\sigma_1^2,...,\sigma_n^2)$ $\Rightarrow$ $\mathbf x\sim\mathcal N(\pmb\mu,\mathbf{WW}^T+\pmb\Sigma)$\\
+\textbf{Non-identifiability:} $(\mathbf{WQ})(\mathbf{WQ})^T=\mathbf{WW}^T$ for $\mathbf Q \in O(m)$\\
+\textbf{Posterior inference:} \hfill $\pmb\mu_{\mathbf{z|x}}=\mathbf W^T(\mathbf{WW}^T+\pmb\Sigma)^{-1}(\mathbf x-\pmb\mu)$
+
+\hfill $\pmb\Sigma_{\mathbf{z|x}}=\mathbf I-\mathbf W^T(\mathbf{WW}^T+\pmb\Sigma)^{-1}\mathbf W$\\
+\textbf{MLE:} $\max_{\mu, W}\log p(\mathbf X;\pmb\mu,\mathbf W)$, has no closed form solution\\
+\textbf{Probabilistic PCA}: for $\pmb\Sigma=\sigma^2\mathbf I$, $w_i^* = \sqrt{\max(0, \lambda_i - \sigma^2)} \cdot u_i$
+with $(\lambda_i, u_i)$ the i'th eigenvalue/-vector of $X X^T \in \mathbb{R}^{n \times n}$.
+\subsection*{Variational Autoencoders}
+
+Latent variable $\mathbf z\sim\mathcal N(\mathbf 0, \mathbf I)$ and conditional $p_\theta(x|z)$ require intractable integration for $p_\theta(x)$ (MLE). Hence, we max.\\
+\textbf{ELBO:} $\log p(\mathbf x;\pmb\theta)\geq \mathbb E_{\mathbf z\sim q(\mathbf z;\mathbf x)}[\log p(\mathbf x|\mathbf z;\pmb\theta)]-\text{D}(q(\mathbf z;\mathbf x)||p(\mathbf z))$
+
+\hfill $= \log p(\mathbf x;\pmb\theta) - \text{D}(q(\mathbf z;\mathbf x)||p(\mathbf z | \mathbf x, \pmb \theta))$
+
+
+$q(\mathbf z;\mathbf x)$ is restricted to (typic. Gaussian) variational family: \\ $\mathcal N(\mathbf z;\pmb\mu(\mathbf x),\pmb\Sigma(\mathbf x)), \text{ where } \pmb\Sigma(\mathbf x)=\text{diag}(\sigma_1^2(\mathbf x),...,\sigma_n^2(\mathbf x))$\\
+stochastic backpropagation / re-parameterization trick:\\
+$\mathbf z\sim\mathcal N(\pmb\mu(\bf x),\pmb\Sigma(\bf x)) \quad \Leftrightarrow \quad\mathbf z=\pmb\mu(\bf x)+\pmb\Sigma^{1/2} \bf(x)\ \pmb\eta, \quad \pmb\eta\sim\mathcal N(\mathbf 0,\mathrm I)$

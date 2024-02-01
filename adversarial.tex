@@ -1,0 +1,13 @@
+\color{black}
+\section*{Adversarial Robustness}
+\textit{Adversarial examples are small manipulations of input which cause the model to change its prediction.}\\
+\subsection*{Unconstrained Perturbations - DeepFool}
+\textit{Smallest perturbation in $l_p$-norm that induces mistake, detectable since close to decision boundary.}\\
+
+Given a linear multiclass model $g(x) = \arg \max_i f_i(x)$ where $ f_i = w_i^T x + b_i$ the $||\cdot||_2$-optimal perturbation is given by the smallest norm $\eta_i = \frac{f_{true}(x) - f_i(x)}{||w_{true} - w_i||_2^2} (w_i - w_{true})$. By linearization of a DNN we can iterate (DeepFool): repeatedly
+
+\resizebox{\linewidth}{!}{$\min_{i, \nabla\eta} ||\nabla\eta||_2$ s.t. $(\nabla f_{true}(x) - \nabla f_i(x))^T \nabla \eta + f_{true}(x) -  f_i(x) < 0$}
+
+\subsection*{Robust Training using Constrained Perturbations}
+\textbf{Loss:} $\ell_{robust}^\epsilon(f_\theta(x), y) = \max_{\eta : ||\eta||_p \leq \epsilon} \ell(f_\theta(x+\eta), y)$ where the maximization can be solved by projected gradient ascent with projectors $\Pi_p z = \epsilon z/||z||_p$. For $p=2$ the gradient steps use $\nabla_x \ell$ and for $p=\infty$ they use $\text{sign}\nabla_x \ell$ instead.
+\resizebox{\linewidth}{!}{\textbf{FastGradientSignMethod:} $p=\infty$ and single step with $\text{lr} = 1$.}

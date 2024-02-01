@@ -1,0 +1,12 @@
+\section*{Sampling from Posterior for Bayesian DNNs}
+
+\textbf{Markov Chain Monte Carlo:}
+Gibb's distribution: \(p(\theta|\mathcal{D}) =\! \tfrac{1}{Z}\! \exp(-f(\theta))\) \resizebox{.755\linewidth}{!}{with energy function \(f(\theta) \!=\! -\log p(\theta|\mathcal{D}) \!-\! \log Z\)}.\\
+In Metropolis Hastings with proposal distribution \(r(\theta'|\theta)\) we accept with $\mathbb{P}[accept] \!=\! \mathrm{min}\{1,\!\tfrac{r(\theta|\theta')}{r(\theta'|\theta)}\! \exp(f(\theta)\!-\!f(\theta'))\}$.
+
+\textbf{Hamiltonian Monte Carlo visits all modes of posterior:}\\
+Lift \(p(\theta | \mathcal{D})\) to \(p(\theta,y | \mathcal{D}) \propto \exp(-H(\theta,y))\) with momentum \(y\) and \(H(\theta,y) = ||y||_2^2 / 2m + f(\theta)\). Sample 
+$p(y|\theta, \mathcal{D}) \sim \mathcal{N}(0, mI)$ and simulate for some \(\Delta t\) \(\tfrac{d\theta}{dt} = \nabla_y H \quad \tfrac{dy}{dt} = - \nabla_\theta H\) with \resizebox{\linewidth}{!}{acceptance probability \(\min(1, \exp(H(\theta,y) - H(\theta',y'))) =  1\).} If \resizebox{\linewidth}{!}{$\nabla_\theta H$ is estimated stochastically, acceptance is not guaranteed.}
+\resizebox{\linewidth}{!}{We can add friction and noise (\underline{Langevin dynamics}) to $\frac{dy}{dt}$:}
+
+\hspace{35pt} $dy = - \nabla_\theta H\ dt - \underset{\mathrm friction}{B\ y\ dt} + \underset{noise}{\mathcal{N}(0, 2B \ dt)}$

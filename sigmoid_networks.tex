@@ -1,0 +1,35 @@
+\section*{Nonlinear Networks}
+\color{black}
+%\textbf{Rectified Linear Unit (ReLU):} $\mathbf x\mapsto (\mathbf x)_+=\max\{0,\mathbf x\}$\\
+
+\vspace{-8pt}
+
+\textbf{Absolute Value Unit (AbsU)}: $|z|, \quad \partial |z|=\begin{cases}  1 \quad\quad\quad z>0 \\ [-1,1] \quad z=0 \\ -1 \quad\quad z<0  \end{cases}$\\[-4pt]
+
+\hfill $(z)_+=(z+|z|)/2$ and $|z|=2(z)_+-z=(z)_++(-z)_+$\\
+
+\resizebox{\linewidth}{!}{\textbf{Logistic/Sigmoid unit}: $\sigma(z)=\frac{1}{1+\exp\{-z\}}, \quad$ $\sigma^{-1}(t)=\log\frac{t}{1-t}$}
+
+\hfill $\sigma'(z)=\sigma(z)\cdot [1-\sigma(z)]=\sigma(z)\sigma(-z)$\\
+\textbf{Hyperbolic Tangent}: $\tanh (z):=\frac{e^z-e^{-z}}{e^z+e^{-z}}=2\sigma(2z)-1$
+
+\hfill $\tanh' (z)=1-\tanh^2(z)$\\[-2pt]
+\textbf{GELU: } $\phi(z) = z \mathbb{P}(Z \leq z) \quad Z \sim \mathcal{N}(0,1)$
+
+\textbf{Softmax:}
+$\sigma_i^{\max}(\mathbf{x})=\frac{\exp[{x}_i]}{\sum_{j=1}^k\exp[{x}_j]}$
+
+\hfill $\frac{\partial}{\partial x_j}\sigma^{\max}_i(\mathbf{x})= \begin{cases}\sigma_i^{\max}(\mathbf{x})[1-\sigma_i^{\max}(\mathbf{x})], & i=j \\ -\sigma_i^{\max}(\mathbf{x}) \cdot \sigma_j^{\max} (\mathbf{x}), & i\neq j
+\end{cases}$\\[-5pt]
+
+\textbf{Logistic Regression:}\\
+Cross-entropy loss $(y\in\{-1,+1\})$:
+
+\hspace{10pt} $l(\mathbf x, y; \mathbf\theta)=-\log\sigma(y\mathbf{x^T \theta})$ $\Rightarrow \nabla_{\mathbf\theta}l(\mathbf x,y; \theta)=-\sigma(-y\mathbf{x^T\theta})y\mathbf x$\\
+Cross-entropy loss $(y\in\{0,1\})$: 
+
+\hspace{10pt} $l(\mathbf x, y; \mathbf\theta)=-y\log\sigma(\mathbf{x^T\theta})-(1-y)\log(1-\sigma(\mathbf{x^T\theta}))$
+
+\hfill $\Rightarrow \nabla_{\mathbf\theta}l(\mathbf x,y; \theta)=[\sigma(x^T \theta) - y] x$
+
+\color{red}

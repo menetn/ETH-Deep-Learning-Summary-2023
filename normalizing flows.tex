@@ -1,0 +1,15 @@
+
+\section*{Normalizing Flows}
+Implicit model $f_\theta(z)$ with tractable $f_\theta^{-1}(x)$ and $\det \frac{d f_\theta^{-1}(x)}{d x}$. Restrict $f_\theta$ to $C^1$-diffeomorphisms by having each $F_j$ in
+$f_\theta=F_L\circ\cdot\cdot\cdot\circ F_1$ be one with specified $F_j^{-1}$ and $\det(\partial F_j)$:\\
+\resizebox{\linewidth}{!}{$f_\theta^{-1}=F^{-1}_1\circ\cdot\cdot\cdot\circ F_L^{-1} \land  \text{det}\frac{df_\theta^{-1}(x)}{dx}=\prod_{l=L}^1\text{det}\partial F_l^{-1}\circ F_{l+1:L}^{-1}(x)$}\\
+\resizebox{\linewidth}{!}{Flows are universal and optimised via gradient descent of}
+
+$D(p^*||p_\theta) + H(p^*) = \mathbb E_{p^*}[- \log p_z(f_\theta^{-1}(x)) - \log | \det \frac{d f_\theta^{-1}(x)}{d x}|]$
+\textbf{Linear Flow}: $F_j(\mathbf x)=\mathbf{A_jz+b_j}$. Set $A_\theta = Q_\theta R_\theta$ for efficient $A^{-1}(x)$ in $\mathcal{O}(n^2)$ and $|\det A|$ in $\mathcal{O}(n)$ instead of both in $\mathcal{O}(n^3)$.\\
+\textbf{Autoregressive Flow:} $x_i = \tau(z_i; c_i(z_1, \ldots, z_{i-1}))$ where $z \mapsto \tau(z;h)$ is strict monotonous with arbitrary conditioner $c_i$. Closely related to Linear Flows one gets efficient $\tau^{-1}(x)$ and $\det \partial \tau$ with upper diagonal Jacobian $\partial \tau$. 
+
+\textbf{Invertible Linear Time Flows}: $F_j(\mathbf z)=\mathbf z+\mathbf u\sigma(\mathbf{\langle w, z\rangle}+b)$ \\
+
+\color{red}
+

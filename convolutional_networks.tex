@@ -1,0 +1,24 @@
+\color{black}
+\section*{Convolutional Networks}
+\subsection*{Convolution Operator}
+\textbf{Integral Operator:}
+$\left(Tf\right)(u)=\int_{t_1}^{t_2} H(u,t)f(t)dt$\\
+\textbf{Convolution:}
+$(f*h)(u):=\int_{-\infty}^{\infty} h(u - t)f(t) dt = (h * f)(u)$\\
+\textbf{Discrete Convolution:} $(f*h)[u]:=\sum_{t=-\infty}^{\infty}f[t]h[u-t]$\\
+\textbf{Theorem:} An operator $T$ is linear and shift-equivariant $\iff$ $T$ is a convolution $T(f) = f \ast h$ for some kernel $h$\\
+\textbf{Cross-Corr.:} $(f\star h)[u]:=\sum_{t=-\infty}^{\infty}f[t]h[u+t] = (f[-\ \cdot]*h)[u]$\\
+\textbf{Fourier Transform:} $(\mathcal{F}f)(u):=\int_{-\infty}^{\infty}\exp\{-2\pi itu\}f(t)dt$\\
+\textbf{Convolution Theorem:} $u * v = \mathcal F^{-1}(\mathcal F u \cdot \mathcal F v)$\\
+\textbf{Toeplitz Matrices}: Constant diagonals (1D convolutional kernel can be written as a Toeplitz matrix product)
+\subsection*{Convolutional Neural Networks}
+\textit{Exploiting translation equivariance, locality, and scale.\\
+More efficient through parameter sharing and locality.} \\
+\textbf{(Local) Receptive Field of $x_i^l$:} $\ \mathcal{I}_i^l:=\{j:w_{ij}^l\neq 0 \}$\\
+\textbf{Sparse Backpropagation:} $\partial x_i^l/\partial x_j^{l-1}=0$, for $j\notin \mathcal{I}_i^l$\\
+\textbf{Weight Sharing:} $\tfrac{\partial\mathcal{R}}{\partial h_j^l} = \sum_i\tfrac{\partial\mathcal{R}}{\partial x_i^l}\tfrac{\partial x_i^l}{\partial h_j^l}$,\,\, $h_j^l$ kernel weight\\
+\textbf{Pooling 2D}: $x_{ij}^{\max}=\max\{x_{i+k,j+l}:0\leq k< r,0\leq l< r\}$\\
+\textbf{2D Convolutional Layer:} ($\mathbf{X,Y}$ are of shape (c, x, y))\textbf{:}\\ $y[r][s,t]=\sum_u\sum_{\Delta s,\Delta t}w[r,u][\Delta s, \Delta t]\cdot x[u][s+\Delta s, t+\Delta t]$\\
+\resizebox{\linewidth}{!}{\textbf{Output Size:} $\left\lfloor (input\_width+2pad-filter\_width)/stride \right\rfloor + 1$}\\
+\textbf{Embeddings from Log-Bilinear:} $\mathbb{P}(\nu|\omega) = \tfrac{\exp(x_\omega^T y_{\nu})}{\sum_\mu \exp(x_\omega^T y_\mu)}$
+\color{red}

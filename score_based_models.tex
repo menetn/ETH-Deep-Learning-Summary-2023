@@ -1,0 +1,19 @@
+\columnbreak
+
+\section*{Score-Based Models avoid Normalization}
+\resizebox{\linewidth}{!}{\textit{Instead of learning $p(x)$, learn tractable \(\nabla \log p(x) = \frac{\nabla p(x)}{p(x)}\).}}
+\textbf{Fisher Divergence loss:} $\ell(p,\theta) = \mathbb E_{p} ||\nabla_x \log p(x) - s_\theta(x) ||_2^2$
+
+\hfill $= \mathbb E_p [||s_\theta(x)||_2^2 + 2 \text{Tr}( \nabla s_\theta(x) )] + C$
+
+\textbf{Scaling:} $\ell(p,\theta) = \mathbb E_p \mathbb E_{v \sim \mathcal{U}(\mathcal{S}^d)}[(v^T\!\! s_\theta(x))^2 + 2 v^T\!\! \nabla s_\theta(x) v] + C$
+
+\textbf{Sampling via ULA:} $x_{t+1} \sim \mathcal{N}(x_{t+1} ; x_t + \eta_t \nabla_x \log p(x), 2 \eta_t I)$
+
+\textbf{Practical Issues:} \(s_\theta(x)\) only accurate where \(p(x) \gg 0\). Hence, adapt loss to
+$\sum_{i=1}^L \lambda(i) \mathbb{E}_{p_{\sigma_i}}|| \nabla_x \log p_{\sigma_i} - s_\theta(x,i)||_2^2$ where $p_{\sigma_i}$ adds Gaussian noise to samples. 
+
+\textit{The process of sampling (ULA) from \(S_\theta(x,i)\) where iteratively the noise is decreased is mathematically equivalent to sampling from a diffusion model (Inversion of SDE).}
+
+\textbf{Forward SDE:} $dx = f(x,t) dt + g(t) dW$\\ 
+\textbf{Reverse SDE:} $dx = f(x,t) dt - g^2(t) \nabla_x \log p_t(x) dt + g(t) dW$

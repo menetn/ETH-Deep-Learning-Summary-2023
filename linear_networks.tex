@@ -1,0 +1,8 @@
+\color{black}
+\section*{Deep Linear Networks}
+Assume $X \in \mathbb{R}^{n \times s}, Y\in \mathbb{R}^{m \times s}$ s.t. $\sum_{i=1}^s x_i = 0$, $\sum_{i=1}^s y_i = 0$ and $XX^T = I_n$ (whitening).
+Then $W \overset{!}{\approx} \frac{1}{s} Y X^T$ since
+\\$\arg\min_W ||Y - W X||_F = \arg\min_W ||W - \Gamma||_F^2,\quad \Gamma = \frac{1}{s}YX^T$ \\
+This allows SVM-based analysis of 2-layer linear networks with \(\binom{rank(\Gamma)}{width}\) fixed points and one global minimum.
+\textbf{Deep Linear Network Gradients:}\\
+\resizebox{\linewidth}{!}{$\frac{1}{2}\frac{\partial ||W^L \cdots W^1x - y||_2^2}{\partial W^l} = (W^L \cdots W^{l+1})^T (W^L \cdots W^1x -y) x^T (W^{l-1} \cdots W^1)^T$} \\

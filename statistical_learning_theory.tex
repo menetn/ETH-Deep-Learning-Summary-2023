@@ -1,0 +1,19 @@
+\color{black}
+\section*{Statistical Learning Theory}
+\textit{Uniform general bounds given function class \(\mathcal F\) (DNN).}
+\resizebox{\linewidth}{!}{\textbf{Shatter Coef.:} $S(\mathcal{F}, s) = \underset{x_1, \ldots, x_s}{\max} |\{(f(x_1), \ldots, f(x_s)) \in \{\pm 1\}^s\ | f \in \mathcal{F}\}|$}
+
+\textbf{VC dimension:} $\max \{s : S(\mathcal{F}, s) = 2^s\} \leq \log_2 |\mathcal{F}|$
+
+\resizebox{\linewidth}{!}{\textbf{VC inequ.:} 
+$\mathbb P [\sup_{f \in \mathcal F} |\hat{R}_s(f) - R(f)| > \epsilon ] \leq 8 S(\mathcal{F}, s) e^{-s \epsilon^2 / 32}$}
+A finite VC dimension is required for non-trivial bound.
+
+\textbf{Change Of Measure Inequality:}\\
+$\mathbb E_Q Z \leq KL(Q||P) + \ln \mathbb E_P e^Z \quad Q \ll P \quad Z \text{ is }P-\text{measurable}$
+
+\textbf{PAC-Bayesian Theorem:}\\
+\textit{Philosphy: $P$ anchors $Q$ ($P$ must not depend on any samples from $\mathcal{D}$, but $Q$ can) to ensure convergence/bound.}
+
+Fix $P$ (prior) and $\mathcal{D}$ (data). Then for any $Q \ll P$ it holds with $\mathbb P_\mathcal{D}[\cdot] \geq 1-\epsilon$ that $\mathbb{E}_Q[ e_f - \hat e_f] \leq \sqrt{\frac{2KL(Q||P) + \ln \frac{2\sqrt{s}}{\varepsilon}}{s}}$\\
+with true risk $e_f = \mathbb{E}_\mathcal{D} \mathds{1}_{f(x) \not = y}$, $s$-sample risk $\hat{e}_f = \mathbb{E}_{\mathcal{D}_s} \mathds{1}_{f(x) \not = y}$, and param distributions $Q, P$ over $f \in \mathcal F$.

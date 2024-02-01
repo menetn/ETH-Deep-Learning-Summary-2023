@@ -1,0 +1,93 @@
+\section*{Python}
+\subsection*{Basics}
+Round to 2 Digits: {\color{blue} \verb|round(5.76543, 2)=5.77|}
+
+List Comprehension: {\color{blue}\verb|[x**2 for x in list]|}
+
+Conditionals: {\color{blue}\verb|result = val1 if cond else val2|}
+
+\subsection*{Numpy ndarray Manipulation}
+Determinant: {\color{blue}\verb|np.linalg.det(matrix)|}
+
+Create Diagonal Matrix: {\color{blue}\verb|np.diag(diagonal_elements)|}
+
+E-values, E-vectors $[v_1, \ldots, v_n]$: {\color{blue}\verb|np.linalg.eig(matrix)|}
+
+Identity Matrix: {\color{blue}\verb|numpy.eye(size)|}
+
+Inverse: {\color{blue}\verb|numpy.linalg.inv(matrix)|}
+
+Frobenius/Eucl. Norm: {\color{blue}\verb|np.linalg.norm(vector/matrix)|}
+
+Operator Norm:
+{\color{blue}\verb|np.linalg.norm(matrix, ord=2)|}
+
+Matrix Multiplication: {\color{blue}\verb|A @ B|}
+
+SVD: {\color{blue}\verb|U,S,Vt = np.linalg.svd(matrix)|}
+
+Trace: {\color{blue}\verb|np.trace(matrix)|}
+
+Transpose: {\color{blue}\verb|A.getT() or A.transpose()|}
+
+Element-wise Multiplication: {\color{blue}\verb|A * B|}
+
+Element-wise Square Root: {\color{blue}\verb|np.sqrt(matrix)|}
+
+Element-wise Exponential: {\color{blue}\verb|np.exp(matrix)|}
+
+Element-wise logarithm: {\color{blue}\verb|np.log(matrix)|}
+
+Matrix-Power:
+{\color{blue}\verb|np.linalg.matrix_power(matrix, n)|}
+
+\subsection*{Numpy Random ndarray Generation}
+Uniform in $[0,1)$: {\color{blue}\verb|np.random.rand(rows, cols)|}
+
+Int in $[low, high)$: {\color{blue}\verb|np.random.randint(low, high, size)|}
+
+Normal Distr: {\color{blue}\verb|np.random.normal(mean, std_dev, size)|}
+
+\subsection*{PyTorch Basics}
+
+Autograd:
+{\color{blue}
+\verb|x=torch.tensor([1.0],requires_grad=True)|
+
+\hfill \verb|y = x**2; y.backward(); gradient=x.grad|}
+
+Forward pass: {\color{blue}\verb|model(torch.randn(1, 10))|}
+
+Matrix Multiplication: {\color{blue}\verb|torch.mm(A, B)|}
+
+Transpose: {\color{blue}\verb|A.t()|} or 
+
+\hfill {\color{blue}\verb|torch.transpose(input, dim0, dim1)|}
+
+\subsection*{Pytorch Neural Network Building Blocks}
+{\color{blue}\verb|torch.nn.Module|}: base class for NN modules\\
+{\color{blue}\verb|torch.nn.Linear|}: creates a fully connected layer
+
+\subsection*{Pytorch Activation Functions}
+{\color{blue}\verb|import torch.nn.functional as F|\\
+\verb|output = F.relu(input), F.sigmoid(input), F.tanh(input)|}
+
+\subsection*{Loss Functions}
+{\color{blue}\verb|criterion = nn.MSE(), nn.CrossEntropyLoss(), nn.BCELoss|\\
+\verb|loss = criterion(output, target)|}
+
+\subsection*{Optimizers}
+{\color{blue}\verb|optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)|\\
+\verb|optimizer.zero_grad()|\\
+\verb|loss.backward()|\\ \verb|optimizer.step()|}
+
+\subsection*{Training Loop}
+{\color{blue}\verb|for epoch in range(num_epochs):|\\
+\verb|    for inputs, targets in dataloader:|\\
+\verb|        optimizer.zero_grad()|\\
+\verb|        outputs = model(inputs)|\\
+\verb|        loss = criterion(outputs, targets)|\\
+\verb|        loss.backward(); |\\
+\verb|optimizer.step()|}
+
+\newcolumn

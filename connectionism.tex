@@ -1,0 +1,15 @@
+\section*{Connectionism}
+\textbf{Perceptron}\\[-.2cm]
+$(\mathbf{x,\theta})\rightarrow \text{sgn}(\mathbf{x^T\theta}),\quad$  update:\hfill  $\Delta\mathbf{\theta}=\begin{cases} 
+       \mathbf{0}, \quad y \cdot \mathbf{x^T\theta}\geq 0\\
+       y\mathbf x, \quad \text{otherwise}
+       \end{cases}$\\
+Update path zig-zags since $\Delta\mathbf{\theta^T\theta}<0$ if \(\Delta \theta \not = 0\)\\
+Update rule is SGD for the loss: $l(\mathbf x,y;\mathbf\theta)=\max\{0,-y\mathbf{x^T\theta}\}$\\
+\underline{Lemma (Norm Growth)}: For perceptron mistakes $(\mathbf x^t, y^t)$ with induced updates $\Delta\mathbf\theta^t$, set  $\mathbf\theta^s=\sum_{t=1}^s\Delta\mathbf\theta^t$. Then by induction $||\mathbf\theta^s||^2\leq\sum_{t=1}^s||\mathbf x^t||^2$ and thus $||\mathbf x^t||\leq 1 \!\Rightarrow\! ||\mathbf\theta^s||\leq\sqrt s$
+
+\textbf{Def (Linear Separability)}:  $\mathcal{D}$ linearly separable with margin $\gamma>0$ if $\exists \mathbf\theta \in \mathcal{S}^{d-1} :y \cdot \mathbf{x^T\theta}\geq\gamma \quad \forall(\mathbf x, y)\in\mathcal D$\\
+
+
+\textbf{Novikov's convergence theorem:} For $\mathbf\theta^0 = 0$, $||\mathbf x^t||\leq 1$, and \(\gamma\)-separable \(\mathcal{D}\) the perceptron converges in at most $\gamma^{-2}$ updates. \textcolor{gray}{Proof: $||\theta^*|| \cdot  ||\theta^s|| \geq \langle \theta^*,\ \theta^s) =\sum_{t=1}^s \langle \theta^*,  \Delta\theta^t \rangle   = \sum_{t=1}^s y^t \cdot (x^t)^T \theta^* \geq s \gamma  \Rightarrow 1 \geq ||\theta^*|| \geq \gamma \sqrt{s}$}
+\color{red}

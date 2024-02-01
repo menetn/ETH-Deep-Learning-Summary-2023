@@ -1,0 +1,48 @@
+\color{black}
+
+\section*{Geometric Deep Learning}
+\textbf{Group}: A set $\mathcal{G}$ with binary operation $\circ: \mathcal{G} \times \mathcal{G} \rightarrow \mathcal{G}$ s.t. \\
+\underline{Closure:} $gh \in \mathcal{G}\ \forall g,h \in \mathcal G$\\
+\underline{Associativity}: $(gh)f = g(hf) \,\, \forall g,h,f \in \mathcal{G}$\\
+\underline{Identity:} $\exists!\ e \in \mathcal{G}$, for which $eg = ge = g\quad  \forall g \in \mathcal G$\\
+\underline{Inverse:} $\forall g\ \exists!$ $g^{-1} \in \mathcal G$, s.t. $gg^{-1} = g^{-1}g = e$\\
+\textbf{Group Action:} \(\otimes: G \times X \to X\) s.t. \(e(x) = x \ \land \ g(h (x)) = gh( x)\)
+\resizebox{\linewidth}{!}{\textbf{Linear Group Action:} $g(\alpha x + y) = \alpha g(x) + g(y)$ with Repre-}\\
+\resizebox{\linewidth}{!}{sentation $\rho: \mathcal{G} \rightarrow \mathbb{R}^{n\times n}$ s.t. $\rho(g)x = g(x) \Rightarrow \rho(gh) = \rho(g)\rho(h)$}\\
+\textbf{Action on Signals:} $(\rho(h) x)(s) = x(h^{-1} s)$ where $x: \Omega \to \mathbb{R}\quad$\\
+\resizebox{\linewidth}{!}{\textbf{$\mathcal{G}$-Invariance}: $f : \mathcal{X}(\Omega) \rightarrow \mathcal{Y}$ satisfies $f(\rho(g)x) = f(x)\ \forall g \in \mathcal G$}\\
+\resizebox{\linewidth}{!}{\textbf{$\mathcal{G}$-Equivariance:} $f : \mathcal{X}(\Omega) \rightarrow \mathcal{X}(\Omega)$ fulfills $f(\rho(g)x) = \rho(g) f(x)$}\\
+\textbf{$\mathcal{G}$-Convolution}: $(x * \theta)(g) = \int_\Omega x(u) \theta(g^{-1}u) du \quad g \in \mathcal G$\\
+$(\rho(h) x * \theta)(g) = \rho(h) (x * \theta)(g) \quad (x * \rho(h)\theta)(g) = (x * \theta)(gh)$
+\resizebox{\linewidth}{!}{\textbf{Smoothing for Invariance:} $(S_\mathcal{G}f)(x) = \frac{1}{|\mathcal{G}|} \sum_{g \in \mathcal{G}} f(\rho(g) (x))$}\\
+\textbf{Deep Sets:} can represent any in-/equivariant function on sets using only the following two layers:\\
+\underline{Invariant Layer}: $f(X) = \phi\left( \sum_{x \in X} \psi(x) \right)$ with $\phi, \psi$ learnable.\\
+\underline{Equivariant Layer}: $f(X, x_i) = \phi\left( \sum_j \psi(x_j), x_i \right)$
+\subsection*{Graph Neural Nets}
+\textbf{Node Feature Matrix:} $X = [x_1, ..., x_n]^T \in \mathbb{R}^{n\times k}$\\
+\textbf{Permutation Invariance}: $f(PX, PAP^T) = f(X, A)$\\
+\textbf{Permutation Equivariance}: $f(PX, PAP^T) = Pf(X, A)$\\
+\textbf{1-Hop Neighbourhood of $x_i$:} $\mathcal{N}_i = \{j: A_{i,j} \not = 0\}$\\
+\textbf{E.V. GNN Layer}: $f(X, A) = [\phi(x_1, X_{(\mathcal{N}_1)}), \dots, \phi(x_n, X_{(\mathcal{N}_n)})]$ for the multiset $X_{(\mathcal{N}_i)} = \{\{x_j : j \in \mathcal{N}_i\}\}$.\\
+\textbf{Convolution GNN:} $f(X,A)_i = \phi(x_i, \sum_{j \in \mathcal N_i} c_{ij}(A) \psi(x_j))$\\
+\textbf{Attentional GNN:} $f(X,A)_i = \phi(x_i, \sum_{j \in \mathcal N_i} a(x_i, x_j) \psi(x_j))$\\
+\textbf{Message-Passing GNN:} $f(X,A)_i = \phi(x_i, \sum_{j \in \mathcal N_i} \psi(x_i, x_j))$\\
+\resizebox{\linewidth}{!}{\textbf{WL-Test} is a necessary condition for graph isomorphism.}
+It applies \(x_i \gets hash(x_i, X_{(N_i)})\) until convergence (up to relabelling) and compares statistics of the final features.
+
+\columnbreak
+
+\subsection*{Spectral Graph Theory}
+%Edge derivative: $(\nabla x)_{ij} = w_{i,j}(x_j - x_i)$\\
+\textbf{Graph Laplacian:} $L_G=D-A=\sum_{i<j}a_{ij}(e_i-e_j)(e_i-e_j)^T$\\
+with $x^TL_Gx=\sum_{i<j}a_{ij}(x_i-x_j)^2 \geq 0 \implies L_G \succeq 0$
+
+
+Dirichlet Energy: \hfill $L = \nabla^2 x^T L x = \nabla^2 \frac{1}{2} \sum_{u,v} A_{u,v} (x_u - x_v)^2$\\
+\textbf{Norm. Laplacian:} $\mathcal L = I - D^{-1/2}A D^{-1/2} = D^{-1/2}LD^{-1/2}$\\
+\textbf{Graph Fourier:} $L = U\Lambda U^T$, induces $\hat{x} = U^T x$ and $x = U\hat{x}$\\
+\textbf{Spectral Graph Conv:} $h(L)x = Uh(\Lambda) U^T x$ using \(\mathcal O(n^2)\)\\
+More efficient for polynomial kernel $p(L)x = \sum_{i=0}^K \alpha_i L^i x$ using \(\mathcal{O}(K \cdot e)\). The filter is isotropic (circular symmetric).\\
+\resizebox{\linewidth}{!}{For \(c_{in}/c_{out}\) in-/output channels $X_{out}^j = \sum_{i=1}^{c_{in}} p_{i,j}(L)X_{in}^i + b_j$}\\
+\textbf{GCNs} (positively) couple neighbouring units $X^{l+1} = \sigma ((\Tilde{D}^{-1/2} \Tilde{A} \Tilde{D}^{-1/2}) X^l W^l)$ where $\Tilde{A} = A + I_n$ with $\Tilde{D} = D + I$. Stability is ensured by $\lambda_{max}(\Tilde{D}^{-1/2} \Tilde{A} \Tilde{D}^{-1/2}) = 1, \lambda_{min}\geq 0$
+\color{red}

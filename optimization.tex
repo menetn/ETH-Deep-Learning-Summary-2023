@@ -1,0 +1,55 @@
+\color{black}
+\section*{Optimization Convergence Guarantees}
+%\subsection*{Loss Functions}
+%\textbf{Squared:} $l_\mathbf y(\pmb \nu)=\frac{1}{2}||\mathbf y -\pmb\nu||^2$,
+%\textbf{0-1 loss:} $l_y(v)=\begin{cases} 0, \quad \nu=y \\ 1, \quad \text{else}\end{cases}$\\
+%\textbf{Cross-entropy (multiclass):} $l_y(\nu)=-\log \nu_y$\\
+%Soft target cross-entropy ($\mathbf y\in[0,1]^m$): \\
+%$l_\mathbf y(\pmb \nu)=-\sum_{j=1}^my_j\log\nu_j\geq-\sum_{j=1}^my_j\log y_j=:H(\mathbf y)$\\
+%Prob. loss: $l_\mathbf y(\pmb\nu)=-\log p(\mathbf y;\pmb \nu)$ (e.g. replace with isotropic Gaussian to get squared loss)\\
+%\textbf{Exponential family:} $p(\mathbf y;\pmb\nu)=h(\mathbf y)\exp[\mathbf y\cdot\pmb\nu-\psi(\pmb\nu)]$, log partition/normalizing function $\psi$\\
+%Can construct losses by taking distributions in the exponential family in the log prob loss andx replace $\pmb\nu$ with $h(\pmb\theta\cdot\mathbf z)$, where $\mathbf z$ is produced by a Neural Network
+
+\subsection*{Convexity, Smoothness, and Polyak-Lojasiewicz}
+\resizebox{\linewidth}{!}{\textbf{Def. Convexity:} $f(\lambda x +(1\text{-}\lambda)y)\leq \lambda f(x)+(1\text{-}\lambda)f(y) \ \forall\lambda\in[0,1]$}\\
+\textbf{Def. Convexity of Diff'ble $f$:} $f(x)\geq f(y)+\nabla f(y)^T(x-y)$\\
+\resizebox{\linewidth}{!}{\textbf{Def. $\mu$-Strong Convexity:} $f(x)\geq f(y)+\nabla f(y)^T(x\text{-}y)+\frac{\mu}{2}||x\text{-}y||^2$}\\
+\textbf{Def. Lipschitz Smoothness:} $||\nabla f(x)-\nabla f(y)||_2\leq L||x-y||_2$\\
+\resizebox{\linewidth}{!}{$L$-Smoothness implies $f(x)\leq f(y)+\nabla f(y)^T(x-y)+\frac{L}{2}||x-y||^2_2$}
+
+\hfill \resizebox{\linewidth}{!}{\textcolor{gray}{using $f(x) - f(y) - \nabla f(y)^T (x-y) = \int_0^1 [\nabla f(y + (x-y)s) - \nabla f(y)]^T(x-y) ds$}.\hspace{30pt}}
+
+\resizebox{\linewidth}{!}{Applied to GD we get $f(\theta - \frac{1}{L} \nabla f(\theta)) \leq f(\theta) - \frac{1}{2L} || \nabla f(\theta)||_2^2$.\hspace{10pt}}\\
+\resizebox{\linewidth}{!}{\textbf{Hessian of $L$-Smooth \& $\mu$-Strongly Convex:} $\mu\mathrm I\preccurlyeq\nabla^2 f\preccurlyeq L\mathrm I$}\\
+$\epsilon$-\textbf{Stationarity (approximate stationarity):} $||\nabla f(x)||_2\leq\epsilon$\\
+\textbf{PL condition:}
+ $\forall y\ \frac{1}{2 \mu}||\nabla f(y)||^2\geq f(y)-\min_x f(x)$\\
+ implied by $\mu$-strong convexity.
+
+\subsection*{Convergence of GD and GD with Nesterov Momentum}
+\textbf{Thm. Polyak:} Given $f$ $L$-smooth and $\mu$-PL, then GD with $\eta = 1/L$, i.e. $x_{t+1} = x_t - \frac{1}{L} \nabla f(x_t)$, converges globally:
+
+\hspace{25pt} $f(x_t) - \min_x f(x) \leq (1-\frac{\mu}{L})^t [f(x_0) - \min_x f(x)]$
+
+\textbf{Thm. Nesterov:} Given $f$ $L$-smooth and $\mu$-strongly convex with conditioning $\kappa = \frac{L}{\mu}$ and $\beta = \tfrac{\sqrt{\kappa}-1}{\sqrt{\kappa}+1}$, then Nesterov GD converges globally: $f(x_t)-f(x^*)\leq L(1- \sqrt{\tfrac{\mu}{L}})^t\|x_0-x^*\|^2$\\
+
+\subsection*{Convergence of Stochastic Gradient Descent}
+Consider BGD with $r=1$. Then
+$||\theta_t \text{-} \theta_*||^2 - \hat{\mathbb{E}}_{x,y} ||\theta_{t+1} \text{-} \theta_*||^2$ = $2 \eta_t (\theta_t \text{-} \theta_*)^T \hat{\mathbb E}_{x,y} \nabla f_{\theta_t}(x, y) - \eta_t^2 \hat{\mathbb E}_{x,y} ||\nabla f_{\theta_t}(x, y)||^2$ is positive for small enough $\eta_t$ and $(\theta_t - \theta_*)^T \nabla \frac{1}{s}\sum_{k=1}^s f_{\theta_t}(x_k, y_k) > 0$.
+
+\textbf{Polyak Averages:} To reduce $\hat{\mathbb E}_{x,y} ||\bar{\theta}_{t+1} - \bar{\theta}_{t}||^2$ use Polyak \resizebox{\linewidth}{!}{averaging
+$\bar{\theta}_{t+1}\!=\! \frac{t\cdot \bar{\theta}_t}{t+1}\!+\!\frac{\theta_{t+1}}{t+1} \! =\! \frac{-\eta_t \nabla f_{\theta_t}(x,y)}{t+1}$. Let $\eta_t \propto \frac{1}{t}$, then}\\
+$\bullet$ $f$ convex: $\hat{\mathbb E}[f(\bar{\theta_t})] - f(\theta^*) \in \mathcal{O}(1/\sqrt{t})$\\
+$\bullet$ $f$ $\mu$-strongly convex: $\hat{\mathbb E}[f(\bar{\theta_t})] - f(\theta^*) \in \mathcal{O}(\frac{\log t}{t})$\\
+$\bullet$ $f$ $\mu$-strongly convex \& $L$-smooth: $\hat{\mathbb E}[f(\bar{\theta_t})] - f(\theta^*) \in \mathcal{O}(\frac{1}{t})$\\
+
+\textbf{Quasi-Convergence of SGD with Constant Step Size:}\\
+Let $f_\theta \!=\! \frac{1}{s} \sum_{k=1}^s f_\theta(x_k, y_k)$ be \underline{$\mu$-strongly convex} with each $\theta \mapsto f_\theta(x_k, y_k)$ being \underline{$L$-smooth} with measure of variance $\sigma^2 =\frac{1}{s}\sum_{k=1}^s||\nabla_\theta f_\theta(x_k, y_k)-\nabla_\theta f_\theta||^2$. Then for SGD with $\eta_{const} \leq1/\mu$ it holds
+$\hat{\mathbb{E}}\|\theta_t-\theta^*\|^2\leq A^t\|\theta_0-\theta^*\|^2+B$
+where $A=1-2\eta_{const}\mu(1-\eta_{const} L) $ and $B=\frac{\eta_{const}\sigma^2}{\mu(1 - \eta_{const} L)}$.\\
+
+%\textbf{Gradient clipping: } To avoid exploding gradients, can bound the norm of the gradient in the update step by a threshold (e.g. when reaching a "cliff")
+%\subsection*{Momentum} If gradients start going into a particular direction, keep going in that same direction (inertia in direction we had)\\
+\color{black}
+
+

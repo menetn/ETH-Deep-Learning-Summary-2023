@@ -1,0 +1,18 @@
+\color{black}
+\columnbreak
+
+\section*{Generative Adversarial Networks (GANs)}
+\textit{Derive training signal for generator $G_\theta$ from classifier $D_\phi$ that discriminates data from model-generated samples.}\\
+\textbf{Shared Data Generation:} $\tilde p_\theta(\mathbf x, y)=\frac{1}{2}(yp(\mathbf x)+(1-y)p_\theta(\mathbf x))$\\
+\resizebox{\linewidth}{!}{\textbf{Objective:} $\ell(\theta, \phi) = \frac{1}{2}\mathbb{E}_p[\log(q_\phi(x))] + \frac{1}{2}\mathbb{E}_{p_\theta} [\log(1-q_\phi(x))]$}\\
+\textbf{Optimal Discriminator:} $q_\theta(\mathbf x)=\frac{p(\mathbf x)}{p(\mathbf x)+p_\theta(\mathbf x)}=\tilde P_\theta(y=1|\mathbf x)$\\
+\textbf{Objective given $q_\phi(x) \equiv q_\theta(x)$ becomes JS-divergence:}\\
+\resizebox{\linewidth}{!}{$\ell(\theta, \phi^*)\!+\!\log 2 \!=\! \underset{\substack{anti-mode-\\collapse}}{\frac{1}{2}D(p||\frac{p\!+\!p_\theta}{2})} + \underset{\substack{anti-false-\\generation}}{\frac{1}{2}D(p_\theta || \frac{p\!+\!p_\theta}{2})} \!=\!\underset{\in [0, \log 2]}{\text{JSD}(p,p_\theta)}$}
+\resizebox{\linewidth}{!}{\textbf{Training difficulties ($k$ update steps on $D_\phi$ per step on $G_\theta$):}}\\
+$k \gg 1 \Rightarrow$ Strong discriminator $\Rightarrow$ vanishing gradients\\
+$k \approx 1 \Rightarrow$ Weak discriminator $\Rightarrow$ mode collapse
+\subsection*{Wasserstein-GAN}
+\textit{JS-divergence saturates if the support of $p_\theta, p$ does not overlap. Hence min. $W(p, p_\theta) \!=\! \inf_{\gamma \sim \Pi(p, p_\theta)} \!\mathbb{E}_{(x,y) \sim \gamma} ||x\text{-}y||.$}
+2\textbf{KR-duality:} %Kantorovich-Rubinstein
+$W(p, p_\theta) \!=\! \frac{1}{K} \sup_{||f||_L \leq K} \mathbb{E}_{p} f(x) - \mathbb{E}_{p_\theta} f(x)$\\
+Parametrize discriminator $f = f_\phi$ where the $K$-Lipschitz condition can be enforced through weight clipping or gradient penalty $\mathbb E_{p_{\hat{x}}}[(||\nabla_{\hat{x}} f_\phi(\hat{x})||_2 - 1)^2]$ where $\hat{x}$ is sampled along straight lines between $x_1 \sim p$ and $x_2 \sim p_\theta$.

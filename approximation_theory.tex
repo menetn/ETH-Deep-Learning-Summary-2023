@@ -1,0 +1,41 @@
+\color{black}
+\section*{Approximation Theory}
+% universal approx def
+\textbf{Weierstrass Theorem}\\
+Polynomials $\mathcal P$ are dense ($||\cdot||_\infty$) in $C([a,b])\quad \forall a,b\in\mathbb{R}$
+
+\textbf{Def. universal approx. $\mathcal{G}$:} $C(S) \subseteq \overline{\mathcal{G}(S)}\  \forall$ compact 
+$ S \subseteq \mathbb{R}^n$
+% universal approx thm
+\textbf{Universal Approximation Theorem (1d)}:\\
+Let $\sigma \in C^{\infty}(\mathbb{R}) \setminus \mathcal{P}(\mathbb{R})$. Then $H_{\sigma}^1 = \text{span}(\mathcal{G}_{\sigma}^1)$ is a universal approximator with $\mathcal{G}_{\sigma}^1=\{g: g(x) = \sigma(ax + b)\quad a,b\in\mathbb{R}\}$.
+
+\textbf{Universal Approximation Theorem (n-d):}\\
+$H_{\sigma}^n =\text{span}(\mathcal{G}^n_\sigma)$ is a universal approximator where\\ $\mathcal{G}_{\sigma}^n=\{g: g(x)=\sigma(x^T \theta + b)\ \theta\!\in\!\mathbb{R}^n, b \!\in\! \mathbb{R}\}$ \textcolor{gray}{(Pinkus)}
+% universal in higher dim thm
+
+\textbf{Activation Pattern in 1-layer ReLU Network:}\\
+Activation pattern for input \(x\): \(\mathds{1}_{Wx+b>0} \in \{0,1\}^m \)\\
+Input partition into cells: \(X_\kappa = \{x : \mathds{1}_{Wx+b>0} = \kappa\}\)\\
+Restricted to a cell the network is affine.
+
+\textbf{Zaslavsky (upper bound reached if \(\mathcal{H}\) in general pos.):}\\
+$|\mathbb{R}^n - \mathcal{H}| \leq \sum_{i=0}^{\min \{m,n \}} {m \choose i} = R(m)$ with \(\mathcal{H}\) the \(m\) hyperplanes and $|\cdot|$ measuring the number of connected regions.
+
+\textbf{Montufar (deep \(L\)-layer nets with width \(m > n\)):}\\
+\# cells \(= R(m,L) \geq R(m) \lfloor \frac{m}{n} \rfloor^{n(L-1)}\) assuming general pos.
+
+\textbf{Universality of ReLU/AbsU Networks:}
+
+$\bullet$ Piecewise lin. functions are dense in $C([0,1])$\\
+$\bullet$ Piecewise lin. function with $m$ pieces can be written as $g(x)=ax+b+\sum_{i=1}^{m-1}c_i(x-x_i)_+$ ($\exists$ formulation with $|x|$)\\
+$\bullet$ NNs with one hidden layer of ReLU or AbsU are universal function approximators (with Pinkus even on $\mathbb R^n$)
+\subsection*{Minimal Non-Linearity}
+\textbf{k-Hinge Function (maxout unit)}: $g(\mathbf x)=\max_{j=1}^k\{\pmb\theta_j^T\mathbf x+b_j\}$\\
+$\bullet$ Every continous piecewise linear function $f$ can be written as a signed sum of k-Hinges with $k\leq n+1$\\
+\textbf{Polyhedral Set:} Intersection of half-planes (convex)\\
+\textbf{Def. Polyhedral Function}: epigraph$(f)$ is polyhedral set\\
+\textbf{Thm}: Every continous piecewise linear $f:\mathbb R^n \to \mathbb R$ can be written as the difference of two polyhedral functions\\
+$\Rightarrow$ \textbf{Thm}: Maxout networks with two maxout units (difference of two k-Hinges) are universal $f$-approximators
+
+\color{red}
